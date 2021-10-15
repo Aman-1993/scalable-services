@@ -32,7 +32,7 @@ public class KafkaConfiguration {
   @Bean
   public KafkaTemplate<String, Orders> kafkaTemplate() {
     KafkaTemplate<String, Orders> kafkaTemplate = new KafkaTemplate<>(producerFactory());
-    kafkaTemplate.setDefaultTopic(AppConstants.TOPIC_SALES);
+    kafkaTemplate.setDefaultTopic(AppConstants.ORDERS);
     return kafkaTemplate;
   }
 

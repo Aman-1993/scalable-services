@@ -12,7 +12,7 @@
 	<artifactId>inventory</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>inventory</name>
-	<description>Ordering Service</description>
+	<description>Inventory Service</description>
 	<properties>
 		<java.version>11</java.version>
 	</properties>
@@ -55,11 +55,6 @@
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<scope>runtime</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 
 		<dependency>
