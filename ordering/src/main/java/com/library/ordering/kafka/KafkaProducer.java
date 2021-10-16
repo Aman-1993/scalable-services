@@ -13,7 +13,7 @@ public class KafkaProducer {
   private KafkaTemplate<String, Orders> kafkaTemplate;
 
   public void produce(Orders message) {
-    kafkaTemplate.send(AppConstants.TOPIC_SALES, message);
+    kafkaTemplate.send(AppConstants.ORDERS, message);
   }
 
 }
