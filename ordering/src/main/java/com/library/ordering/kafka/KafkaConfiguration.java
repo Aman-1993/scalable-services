@@ -24,7 +24,7 @@ public class KafkaConfiguration {
   public ProducerFactory<String, Orders> producerFactory() {
     Map<String, Object> configProps = new HashMap<>();
     configProps.put(
-        ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "127.0.0.1:9092");
+        ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "10.1.0.105:29092");
     configProps.put(ProducerConfig.ACKS_CONFIG, "all");
     return new DefaultKafkaProducerFactory<>(configProps, new StringSerializer(), new JsonSerializer<>());
   }
