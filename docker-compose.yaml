@@ -11,17 +11,23 @@ services:
         POSTGRES_MULTIPLE_DATABASES: inventorydb,orderdb,paymentdb
       ports:
         - "5432:5432"
+      networks:
+        test:
+          ipv4_address: 10.1.0.103
   ordering:
       container_name: order_container
       image: amanpreet123/scalable-services:ordering
       environment:
-        - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/orderdb
+        - SPRING_DATASOURCE_URL=jdbc:postgresql://10.1.0.103:5432/orderdb
         - SPRING_DATASOURCE_USERNAME=postgres
         - SPRING_DATASOURCE_PASSWORD=postgres
       depends_on:
         - db
       ports:
         - "8080:8080"
+      networks:
+        test:
+          ipv4_address: 10.1.0.102
   inventory:
       container_name: inventory_container
       image: amanpreet123/scalable-services:inventory
@@ -33,6 +39,10 @@ services:
         - db
       ports:
         - "8081:8081"
+      networks:
+        test:
+          ipv4_address: 10.1.0.101
+
   payment:
       container_name: payment_container
       image: amanpreet123/scalable-services:payment
@@ -44,23 +54,35 @@ services:
         - db
       ports:
         - "8082:8082"
-  zookeeper:
-    image: confluentinc/cp-zookeeper:latest
-    environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
-      ZOOKEEPER_TICK_TIME: 2000
-    ports:
-      - 22181:2181
-  kafka:
-    image: confluentinc/cp-kafka:latest
-    depends_on:
-      - zookeeper
-    ports:
-      - 9092:9092
-    environment:
-      KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      networks:
+        test:
+          ipv4_address: 10.1.0.100
+
+networks:
+  test:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.1.0.0/24
+
+#  zookeeper:
+#    image: confluentinc/cp-zookeeper:latest
+#    environment:
+#      ZOOKEEPER_CLIENT_PORT: 2181
+#      ZOOKEEPER_TICK_TIME: 2000
+#    ports:
+#      - 22181:2181
+#  kafka:
+#    image: confluentinc/cp-kafka:latest
+#    depends_on:
+#      - zookeeper
+#    ports:
+#      - 9092:9092
+#    environment:
+#      KAFKA_BROKER_ID: 1
+#      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+#      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+#      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+#      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+#      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
